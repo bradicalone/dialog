@@ -1,0 +1,144 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+}
+
+.Dialog {
+    position: absolute;
+    z-index: 100;
+    transform: translate(0px, 0px);
+    pointer-events: none;
+    perspective: 1000px;
+    backface-visibility: hidden;
+    .Dialog__inner {
+        opacity: 0;
+        background: #fff;
+        border-radius: 30px;
+        padding: 15px;
+        display: flow-root;
+        transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1);
+        -webkit-box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
+            0 -12px 36px -8px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
+            0 -12px 36px -8px rgba(0, 0, 0, 0.03);
+    }
+
+    .Varification__title {
+        font-size: 10px;
+        color: rgb(0, 0, 0);
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .Dialog__arrow {
+        display: block;
+        position: absolute;
+        z-index: -1;
+        width: 0;
+        height: 0;
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-top: 28px solid #fff;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(0deg);
+        transition: all 0.3s ease 0.1s;
+        -webkit-box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
+            0 -12px 36px -8px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
+            0 -12px 36px -8px rgba(0, 0, 0, 0.03);
+    }
+
+    .--bottom {
+        transform: translate(-50%, -5%) rotate(0deg);
+        top: 100%;
+    }
+
+    .--top {
+        transform: translate(-50%, -50%) rotate(180deg);
+        top: -10px;
+    }
+
+    .--left {
+        left: 0%;
+        transform: translate(-100%, -50%) rotate(90deg);
+    }
+
+    .--right {
+        left: 100%;
+        transform: translate(100%, -50%) translate(-30px, 0%) rotate(275deg);
+    }
+
+    .Dialog__layout {
+        // padding: 22px 30px 20px 22px;
+        overflow: hidden;
+        background: #F9F7F2;
+        border-radius: 19px;
+        width: 230px;
+        height: 167px;
+        .Varification {
+            padding: 22px 30px 20px 22px;
+            position: absolute;
+            opacity: 0;
+            transition: opacity .5s ease;
+        }
+        p {
+            font-size: 10px;
+            line-height: 16px;
+            color: #000000bf;
+            margin-bottom: 0;
+        }
+        .Varification__moveOn {
+            width: 16px;
+            height: 16px;
+            display: block;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #fff;
+            transition: background-color .4s ease, border .4s ease,
+        }
+        .Minimum, .UpperLower, .NumSymbol {
+            display: flex;
+            align-items: center;
+            margin: 15px 0 15px 10px;
+        }
+        .active {
+            background-color: #68C358;
+            border: 0px;
+        }
+    }
+}
+
+// Not using
+.Dialog_underlay {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
