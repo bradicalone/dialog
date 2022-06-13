@@ -237,10 +237,8 @@ class DialogVarify {
         if (target.id == 'pwd') {
            return {index: DialogVarify.getPasswordStrength(value), verfifyElement: this.verifyElement}
 
-        }else if (target.id == 'email') {
-            console.log(DialogVarify.checkEmail(value))
+        } else if (target.id == 'email') {
             return {index: DialogVarify.checkEmail(value), verfifyElement: this.verifyElement}
- 
         }
     }
 }
