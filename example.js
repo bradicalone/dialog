@@ -14,8 +14,9 @@ targetsOne.forEach(target => {
     target.addEventListener('input', (e) => {
         // Index of password or email check element
         const {index, verfifyElement} = dialogOne.checkValidation(e)
-        if(index !== -1) {
-            console.log(verfifyElement.querySelectorAll('span')[index].classList.add('varify-active'))
+        console.log('verfifyElement:', verfifyElement)
+        if(index !== -1 && verfifyElement) {
+            verfifyElement.querySelectorAll('span')[index].classList.add('varify-active')
         }
     })
 })
@@ -25,8 +26,8 @@ targetsTwo.forEach(target => {
     target.addEventListener('input', (e) => {
         // Index of password or email check element
         const {index, verfifyElement} = dialogTwo.checkValidation(e)
-        if(index !== -1) {
-            console.log(verfifyElement.querySelectorAll('span')[index].classList.add('varify-active'))
+        if(index !== -1 && verfifyElement) {
+            verfifyElement.querySelectorAll('span')[index].classList.add('varify-active')
         }
     })
 })
