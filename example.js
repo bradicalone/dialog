@@ -1,6 +1,6 @@
 /* Example usage for multiple Dialogs in one file */
 
-
+console.log(DialogVarify)
 // dialog for each group of inputs
 const dialogElement = document.querySelector('.Dialog#one')
 const anotherDialogElement = document.querySelector('.Dialog#two')
