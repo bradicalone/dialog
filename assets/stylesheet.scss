@@ -10,8 +10,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 300px;
-    & > div {
+    padding-top: 50px;
+    & > div:not(.Dialog) {
         margin-top: 20px;
     }
 }
@@ -29,7 +29,6 @@
         border-radius: 30px;
         padding: 15px;
         display: flow-root;
-        transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1);
         -webkit-box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
             0 -12px 36px -8px rgba(0, 0, 0, 0.03);
         box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
@@ -46,7 +45,7 @@
     .Dialog__arrow {
         display: block;
         position: absolute;
-        z-index: -1;
+        z-index: 0;
         width: 0;
         height: 0;
         border-left: 14px solid transparent;
@@ -54,9 +53,8 @@
         border-top: 28px solid #fff;
         top: 50%;
         left: 50%;
+        opacity: 0;
         transform: translate(-50%, -50%) rotate(0deg);
-        // transition: transform 0.3s ease, left 0.3s ease;
-        transition: transform 0.3s ease .1s;
         -webkit-box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
             0 -12px 36px -8px rgba(0, 0, 0, 0.03);
         box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
@@ -64,23 +62,31 @@
     }
 
     .--bottom {
-        transform: translate(-50%, -5%) rotate(0deg);
+        opacity: 1;
+        transform: translate(-50%, -15%) rotate(0deg);
         top: 100%;
+        transition: top 0.3s ease, transform 0.4s cubic-bezier(.31,1.4,.64,1), opacity .3s cubic-bezier(0, 0.55, 0.45, 1) ;
     }
 
     .--top {
+        opacity: 1;
         transform: translate(-50%, -50%) rotate(180deg);
         top: -10px;
+        transition: transform 0.4s ease, opacity .3s cubic-bezier(0, 0.55, 0.45, 1), top 0.3s cubic-bezier(.31,1.4,.64,1);
     }
 
     .--left {
-        left: 0%;
+        opacity: 1;
+        left: 2%;
         transform: translate(-100%, -50%) rotate(90deg);
+        transition: transform 0.4s ease, opacity .3s cubic-bezier(0, 0.55, 0.45, 1), left 0.3s cubic-bezier(.31,1.4,.64,1);
     }
 
     .--right {
+        transition: left 0.3s cubic-bezier(.31,1.4,.64,1), transform 0.4s ease, opacity .3s cubic-bezier(0, 0.55, 0.45, 1);
+        opacity: 1;
         left: 100%;
-        transform: translate(100%, -50%) translate(-30px, 0%) rotate(275deg);
+        transform: translate(-20%, -50%)  rotate(270deg);
     }
 
     .Dialog__layout {
@@ -91,9 +97,6 @@
         height: 167px;
         .Varification {
             padding: 22px 30px 20px 22px;
-            position: absolute;
-            opacity: 0;
-            transition: opacity .5s ease;
         }
         p {
             font-size: 10px;
@@ -111,10 +114,15 @@
             background-color: #fff;
             transition: background-color .4s ease, border .4s ease,
         }
-        .Varification div {
-            display: flex;
-            align-items: center;
-            margin: 15px 0 15px 10px;
+        .Varification__email, .Varification__pwd {
+            position: absolute;
+            transition: opacity .4s ease-in-out;
+            opacity: 0;
+            & div {
+                display: flex;
+                align-items: center;
+                margin: 15px 0 15px 10px;
+            }
         }
         .varify-active {
             transition: background-color 0.4s ease;

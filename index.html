@@ -1,26 +1,24 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Dialog Varification</title>
-        <meta name="description" content="Input Varification">
-        <meta name="author" content="Brad Vanderbush">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="assets/stylesheet.css">
 
-
-        <script src="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/index.js" defer></script>
-        <script src="example.js" defer></script>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>Dialog Varification Test Page</title>
+    <meta name="description" content="Input Varification">
+    <meta name="author" content="Brad Vanderbush">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/stylesheet.css">
+    <!-- <script src="index.js" defer></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/index.js" defer></script> -->
+    <!-- <script src="example.js" defer></script> -->
+</head>
 </body>
 <div class="container">
     <div>
         <label for="email">Email:</label><br>
         <!-- Input are unique per Dialog -->
         <input class="first" type="text" id="email" autocomplete="off" name="email"><br>
-    </div>
-    <div>
         <label for="pwd">Password:</label><br>
         <!-- Input are unique per Dialog -->
         <input class="first" type="password" autocomplete="off" id="pwd" name="pwd">
@@ -29,8 +27,6 @@
         <label for="email">Email:</label><br>
         <!-- Input are unique per Dialog -->
         <input class="two" type="text" id="email" autocomplete="off" name="email"><br>
-    </div>
-    <div>
         <label for="pwd">Password:</label><br>
         <!-- Input are unique per Dialog -->
         <input class="two" type="password" autocomplete="off" id="pwd" name="pwd">
@@ -38,60 +34,18 @@
     <div class="Dialog" id="one">
         <div class="Dialog__inner">
             <div class="Dialog__layout">
-                <div class="Varification Varification__email">
-                    <p class="Varification__title">EMAIL MUSTS:</p>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>Correct characters</p>
-                    </div>
-                </div>
-                <div class="Varification Varification__pwd">
-                    <p class="Varification__title">PASSWORD MUSTS:</p>
-                    <div class="Minimum">
-                        <span class="Varification__moveOn"></span>
-                        <p>Minimum of 8 characters</p>
-                    </div>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>At least one number or symbol</p>
-                    </div>
-                    <div class="UpperLower">
-                        <span class="Varification__moveOn"></span>
-                        <p>Upper and lower case letters</p>
-                    </div>
-                </div>
+                <h4 style="text-align: center;">Your own html elements here..</h4>
             </div>
-            <span class="Dialog__arrow"></span>
         </div>
+        <span class="Dialog__arrow"></span>
     </div>
     <div class="Dialog" id="two">
         <div class="Dialog__inner">
             <div class="Dialog__layout">
-                <div class="Varification Varification__email">
-                    <p class="Varification__title">EMAIL MUSTS:</p>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>Correct characters</p>
-                    </div>
-                </div>
-                <div class="Varification Varification__pwd">
-                    <p class="Varification__title">PASSWORD MUSTS:</p>
-                    <div class="Minimum">
-                        <span class="Varification__moveOn"></span>
-                        <p>Minimum of 8 characters</p>
-                    </div>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>At least one number or symbol</p>
-                    </div>
-                    <div class="UpperLower">
-                        <span class="Varification__moveOn"></span>
-                        <p>Upper and lower case letters</p>
-                    </div>
-                </div>
+                <!-- Using built in Varification -->
             </div>
-            <span class="Dialog__arrow"></span>
         </div>
+        <span class="Dialog__arrow"></span>
     </div>
     <div style="display: flex; gap: 1rem">
         <button class="btn close-dialog" id="close-one">Close Dialog One</button>
@@ -99,5 +53,4 @@
     </div>
 </div>
 </body>
-
 </html>
