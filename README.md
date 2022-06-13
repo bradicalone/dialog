@@ -17,18 +17,14 @@ Creating a varification dialog is extremely simple! To create a new dialog with 
 
 
 ```html
-<h2>HTML</h2>
-
-<pre>
-    <div class="Dialog">
-        <div class="Dialog__inner">
-            <div class="Dialog__layout">
-                <!-- Your html elements in here -->
-            </div>
-            <span class="Dialog__arrow"></span>
+<div class="Dialog">
+    <div class="Dialog__inner">
+        <div class="Dialog__layout">
+            <!-- Your html elements in here -->
         </div>
+        <span class="Dialog__arrow"></span>
     </div>
-</pre>
+</div>
 ```
 
 ### Example using the varification dialog
@@ -52,92 +48,88 @@ closeButton.addEventListener('click', (e) => verification.close(e))
 
 
 ```html
-<h2>HTML</h2>
-
-<pre>
-    <div>
-        <label for="email">Email:</label><br>
-        <!-- Input are unique per Dialog -->
-        <input class="first" type="text" id="email" autocomplete="off" name="email"><br>
-    </div>
-    <div>
-        <label for="pwd">Password:</label><br>
-        <!-- Input are unique per Dialog -->
-        <input class="first" type="password" autocomplete="off" id="pwd" name="pwd">
-    </div>
-    <div>
-        <label for="email">Email:</label><br>
-        <!-- Input are unique per Dialog -->
-        <input class="two" type="text" id="email" autocomplete="off" name="email"><br>
-    </div>
-    <div>
-        <label for="pwd">Password:</label><br>
-        <!-- Input are unique per Dialog -->
-        <input class="two" type="password" autocomplete="off" id="pwd" name="pwd">
-    </div>
-    <div class="Dialog" id="one">
-        <div class="Dialog__inner">
-            <div class="Dialog__layout">
-                <div class="Varification Varification__email">
-                    <p class="Varification__title">EMAIL MUSTS:</p>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>Correct characters</p>
-                    </div>
-                </div>
-                <div class="Varification Varification__pwd">
-                    <p class="Varification__title">PASSWORD MUSTS:</p>
-                    <div class="Minimum">
-                        <span class="Varification__moveOn"></span>
-                        <p>Minimum of 8 characters</p>
-                    </div>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>At least one number or symbol</p>
-                    </div>
-                    <div class="UpperLower">
-                        <span class="Varification__moveOn"></span>
-                        <p>Upper and lower case letters</p>
-                    </div>
+<div>
+    <label for="email">Email:</label><br>
+    <!-- Input are unique per Dialog -->
+    <input class="first" type="text" id="email" autocomplete="off" name="email"><br>
+</div>
+<div>
+    <label for="pwd">Password:</label><br>
+    <!-- Input are unique per Dialog -->
+    <input class="first" type="password" autocomplete="off" id="pwd" name="pwd">
+</div>
+<div>
+    <label for="email">Email:</label><br>
+    <!-- Input are unique per Dialog -->
+    <input class="two" type="text" id="email" autocomplete="off" name="email"><br>
+</div>
+<div>
+    <label for="pwd">Password:</label><br>
+    <!-- Input are unique per Dialog -->
+    <input class="two" type="password" autocomplete="off" id="pwd" name="pwd">
+</div>
+<div class="Dialog" id="one">
+    <div class="Dialog__inner">
+        <div class="Dialog__layout">
+            <div class="Varification Varification__email">
+                <p class="Varification__title">EMAIL MUSTS:</p>
+                <div class="NumSymbol">
+                    <span class="Varification__moveOn"></span>
+                    <p>Correct characters</p>
                 </div>
             </div>
-            <span class="Dialog__arrow"></span>
-        </div>
-    </div>
-    <div class="Dialog" id="two">
-        <div class="Dialog__inner">
-            <div class="Dialog__layout">
-                <div class="Varification Varification__email">
-                    <p class="Varification__title">EMAIL MUSTS:</p>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>Correct characters</p>
-                    </div>
+            <div class="Varification Varification__pwd">
+                <p class="Varification__title">PASSWORD MUSTS:</p>
+                <div class="Minimum">
+                    <span class="Varification__moveOn"></span>
+                    <p>Minimum of 8 characters</p>
                 </div>
-                <div class="Varification Varification__pwd">
-                    <p class="Varification__title">PASSWORD MUSTS:</p>
-                    <div class="Minimum">
-                        <span class="Varification__moveOn"></span>
-                        <p>Minimum of 8 characters</p>
-                    </div>
-                    <div class="NumSymbol">
-                        <span class="Varification__moveOn"></span>
-                        <p>At least one number or symbol</p>
-                    </div>
-                    <div class="UpperLower">
-                        <span class="Varification__moveOn"></span>
-                        <p>Upper and lower case letters</p>
-                    </div>
+                <div class="NumSymbol">
+                    <span class="Varification__moveOn"></span>
+                    <p>At least one number or symbol</p>
+                </div>
+                <div class="UpperLower">
+                    <span class="Varification__moveOn"></span>
+                    <p>Upper and lower case letters</p>
                 </div>
             </div>
-            <span class="Dialog__arrow"></span>
         </div>
+        <span class="Dialog__arrow"></span>
     </div>
-    <div style="display: flex; gap: 1rem">
-        <button class="btn close-dialog" id="close-one">Close Dialog One</button>
-        <button class="btn close-dialog" id="close-two">Close Dialog Two</button>
+</div>
+<div class="Dialog" id="two">
+    <div class="Dialog__inner">
+        <div class="Dialog__layout">
+            <div class="Varification Varification__email">
+                <p class="Varification__title">EMAIL MUSTS:</p>
+                <div class="NumSymbol">
+                    <span class="Varification__moveOn"></span>
+                    <p>Correct characters</p>
+                </div>
+            </div>
+            <div class="Varification Varification__pwd">
+                <p class="Varification__title">PASSWORD MUSTS:</p>
+                <div class="Minimum">
+                    <span class="Varification__moveOn"></span>
+                    <p>Minimum of 8 characters</p>
+                </div>
+                <div class="NumSymbol">
+                    <span class="Varification__moveOn"></span>
+                    <p>At least one number or symbol</p>
+                </div>
+                <div class="UpperLower">
+                    <span class="Varification__moveOn"></span>
+                    <p>Upper and lower case letters</p>
+                </div>
+            </div>
+        </div>
+        <span class="Dialog__arrow"></span>
     </div>
-</pre>
+</div>
+<div style="display: flex; gap: 1rem">
+    <button class="btn close-dialog" id="close-one">Close Dialog One</button>
+    <button class="btn close-dialog" id="close-two">Close Dialog Two</button>
+</div>
 ```
 
 ```javascript
