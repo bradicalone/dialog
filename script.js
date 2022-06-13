@@ -1,29 +1,38 @@
 
 
 
-class PosDialog {
-    static offset = document.querySelector('.Dialog').getBoundingClientRect()
-    static resized = false
-    static _target = {}
-    static state = {target: '', open: false}
-    constructor(target) {
-        this.target = target
+class DialogVarify {
+    constructor(dialog) {
+        this.state = { target: '', open: false, resized: false }
+        this.dialog = dialog
+        this.offset = dialog.getBoundingClientRect()
         this.moveTo = this.moveTo
-        PosDialog.offset.currentX = 0;
-        PosDialog.offset.currentY = 0;
+        this.offset.currentX = 0;
+        this.offset.currentY = 0;
         this.extraPadding = 30;
     }
 
-    static getElements() {
-        return {
-            dialog: document.querySelector('.Dialog'),
-            innerEl: document.querySelector('.Dialog__inner'),
-            arrow: document.querySelector('.Dialog__arrow'),
+    open(e) {
+        this.target = e.target
+        if (this.state.target === this.target) return
+        this.moveTo(true)
+    }
+
+    close(e) {
+        if (!this.state.open) return
+        this.moveTo(false)
+    }
+
+    debounce(fn, wait) {
+        let t;
+        return (...args) => {
+            clearTimeout(t);
+            t = setTimeout(() => fn(this, ...args), wait);
         };
     }
 
     onResize() {
-        if (PosDialog.resized) return;
+        if (this.state.resized) return;
 
         let { width } = document.body.getBoundingClientRect()
         const callback = (mutationsList) => {
@@ -35,43 +44,42 @@ class PosDialog {
         }
         this.observer = new ResizeObserver(callback);
         this.observer.observe(document.body);
-        PosDialog.resized = true
-    }
-
-    debounce(fn, wait) {
-        let t;
-        return (...args) => {
-            clearTimeout(t);
-            t = setTimeout(() => fn(this, ...args), wait);
-        };
+        this.state.resized = true
     }
 
     removeResize() {
         this.observer.unobserve(document.body);
     }
 
+    getElements() {
+        return {
+            dialog: this.dialog,
+            innerEl: this.dialog.querySelector('.Dialog__inner'),
+            arrow: this.dialog.querySelector('.Dialog__arrow'),
+        };
+    }
+
     checkPos() {
-        const { dialog } = PosDialog.getElements();
-        const dialogPos = dialog.getBoundingClientRect();
-        const targetPos = PosDialog._target.getBoundingClientRect();
+        const dialogPos = this.dialog.getBoundingClientRect();
+        const targetPos = this.target.getBoundingClientRect();
 
         const canFitRight = window.innerWidth - targetPos.right > dialogPos.width + this.extraPadding;
         const canFitLeft = targetPos.x > dialogPos.width + this.extraPadding;
-        const canFitAbove = targetPos.y + this.extraPadding > dialogPos.height 
+        const canFitAbove = targetPos.y + this.extraPadding > dialogPos.height
         return { canFitRight, canFitLeft, canFitAbove, offsetX: dialogPos.x, targetPos, dialogPos }
     }
 
     // Update this.offset if screen changes
     updatePos() {
-        const { dialog } = PosDialog.getElements();
-        const { x, y } = this.getPos();
-        console.log('x, y:', x, y)
+        const { dialog, arrow } = this.getElements();
+        const { x, y, side } = this.getPos();
 
         dialog.style.transform = `translate(${~~x}px, ${~~y}px)`;
+        arrow.className = `Dialog__arrow --${side}`
         // Update current postions of Dialog
-        PosDialog.offset = dialog.getBoundingClientRect()
-        PosDialog.offset.currentX = x
-        PosDialog.offset.currentY = y
+        this.offset = this.dialog.getBoundingClientRect()
+        this.offset.currentX = x
+        this.offset.currentY = y
     }
 
     /** 
@@ -79,46 +87,40 @@ class PosDialog {
         returns cordinates to update Dialog/modal
     **/
     getPos() {
-        const { arrow } = PosDialog.getElements();
         const { canFitRight, canFitLeft, canFitAbove, targetPos, dialogPos } = this.checkPos();
 
-        // Starts annitially positioning Dialog to the right of target
-        const rightX = PosDialog.offset.currentX  + (targetPos.right - dialogPos.x + this.extraPadding)
-        const bottomY = PosDialog.offset.currentY  + (targetPos.bottom  + this.extraPadding  - dialogPos.y)
-
-        arrow.classList.remove(arrow.classList[1])
+        // Starts the dialog annitial position to the left of target
+        const rightX = this.offset.currentX + (targetPos.right - dialogPos.x + this.extraPadding)
+        const bottomY = this.offset.currentY + (targetPos.bottom + this.extraPadding - dialogPos.y)
 
         let x = 0
         let y = 0
+        let side = ''
 
         // Right side of target
         if (canFitLeft && canFitAbove) {
-            console.log('canFitLeft:', canFitLeft)
             x = rightX - targetPos.width - dialogPos.width - this.extraPadding * 2;
             y = bottomY - this.extraPadding - dialogPos.height / 2 - targetPos.height / 2;
-            arrow.classList.add('--right');
+            side = 'right'
             // Left side of target
         } else if (canFitRight && canFitAbove) {
-            console.log('canFitRight:', canFitRight)
             x = rightX;
             y = bottomY - this.extraPadding - targetPos.height / 2 - dialogPos.height / 2;
-            arrow.classList.add('--left');
+            side = 'left'
             // Bottom middle or Top middle of target
         } else {
             x = rightX - this.extraPadding - targetPos.width / 2 - dialogPos.width / 2;
 
             // Above target in middle
             if (canFitAbove) {
-                console.log('canFitAbove:', canFitAbove)
-                arrow.classList.add('--bottom');
                 y = bottomY - dialogPos.height - this.extraPadding - targetPos.height * 2;
+                side = 'bottom'
             } else {
-                console.log('canFitbelow:')
-                arrow.classList.add('--top');
                 y = bottomY;
+                side = 'top'
             }
         }
-        return { x, y };
+        return { x, y, side };
     }
 
     static outQuart = (n) => {
@@ -130,10 +132,12 @@ class PosDialog {
         return --n * n * ((s + 1) * n + s) + 1;
     };
 
-    static showDetails() {
-
-        Array.from(document.querySelectorAll('.Varification')).forEach(el => {
-            if(el.classList.contains(`Varification__${PosDialog._target.name}`)) {
+    // Show the verification content per input
+    showDetails() {
+        Array.from(this.dialog.querySelectorAll('.Varification')).forEach(el => {
+            if (el.classList.contains(`Varification__${this.target.name}`)) {
+                this.verifyElement = el
+                console.log(el)
                 el.style.opacity = 1
             } else {
                 el.style.opacity = 0
@@ -142,16 +146,13 @@ class PosDialog {
     }
 
     moveTo(open) {
-        if(PosDialog.state.target ===  PosDialog._target) return
-        const { dialog, innerEl } = PosDialog.getElements();
-        const { x, y } = this.getPos();
- 
-        const dur = open ? 500 : 400;
+        const { dialog, innerEl, arrow } = this.getElements();
+        const { x, y, side } = this.getPos();
+
+        const dur = open ? 400 : 400;
         const rotateDegree = 55;
         const { canFitRight, canFitLeft, canFitAbove } = this.checkPos();
         const rotateVertical = canFitRight && canFitAbove || canFitLeft && canFitAbove ? false : true
-
-        let start = 0;
 
         // If opened while already opened dont animate open again
         const hasStyle = !!dialog.style.transform && open;
@@ -159,34 +160,36 @@ class PosDialog {
         innerEl.style.opacity = open ? 1 : 0;
         dialog.style.transition = hasStyle ? 'transform .3s cubic-bezier(0.25, 1, 0.5, 1)' : null
         dialog.style.transform = `translate(${~~x}px, ${~~y}px)`;
-        
+        arrow.className = `Dialog__arrow --${side}`
+
+        let start = 0;
         const animate = timestamp => {
             if (!start) start = timestamp;
 
             const progress = Math.min((timestamp - start) / dur, 1);
-            const ease = open ? PosDialog.outBack(progress) : PosDialog.outQuart(progress);
+            const ease = open ? DialogVarify.outBack(progress) : DialogVarify.outQuart(progress);
             const deg = !open ? rotateDegree * ease : rotateDegree - (rotateDegree * ease);
 
             const rotate = !rotateVertical ? `rotateY(${deg}deg)` : `rotateX(${deg}deg)`;
             innerEl.style.transformOrigin = !rotateVertical ? 'center bottom' : 'left center';
-            if(PosDialog.state.open !== open) innerEl.style.transform = rotate;
+            if (this.state.open !== open) innerEl.style.transform = rotate;
 
-  
+
             if (progress == 1) {
-                if(!open) {
-                    document.querySelector(`.Varification__${PosDialog._target.name}`).removeAttribute('style')
+                if (!open) {
+                    this.state = { target: '', open: false, resized: false }
                     return
                 }
-                PosDialog.showDetails()
-                PosDialog.offset = document.querySelector('.Dialog').getBoundingClientRect()
-                PosDialog.offset.currentX = x
-                PosDialog.offset.currentY = y
+
+                this.offset.currentX = x
+                this.offset.currentY = y
                 // Keeps from clicking open twice and dialog rotating back and forth
-                PosDialog.state.open = open
-                PosDialog.state.target = PosDialog._target
+                this.state.open = open
+                this.state.target = this.target
+                this.showDetails()
                 dialog.style.transition = null
                 this.onResize()
-                
+
             } else {
                 requestAnimationFrame(animate)
             }
@@ -199,8 +202,8 @@ class PosDialog {
     static passesCharLength(password) {
         return password.length >= 8;
     }
-    static hasCapitalLetter(password) {
-        return /[A-Z]/.test(password)
+    static hasCapitalLower(password) {
+        return /[A-Z]/.test(password) && /[a-z]/.test(password)
     }
     static hasNumberChar(password) {
         return /[0-9]/.test(password)
@@ -208,13 +211,13 @@ class PosDialog {
     static hasNumberSpecial(password) {
         return /[\"/$&+,:;=?@#0-9_|'.^*()%!-]/gi.test(password);
     }
-    static getPasswordStrength(password){
-        
-        console.log('this:', this.passesCharLength)
+    static getPasswordStrength(password) {
+
+
         /* Returns a value from 0 to 1 indicating how secure the password is */
-        const checks = [this.passesCharLength, this.hasCapitalLetter, this.hasNumberChar];
-        const passedChecks = checks.map((check) => check(password)).filter((val) => val).length;
-        return passedChecks / checks.length;
+        const checks = [this.passesCharLength, this.hasNumberSpecial, this.hasCapitalLower];
+        const indexPassed = checks.map((check) => check(password)).indexOf(true);
+        return indexPassed
     }
 
     static isStringPassword(password) {
@@ -223,56 +226,57 @@ class PosDialog {
 
     checkValidation(e) {
         const target = e.target
-        console.log('target:', target)
         const value = e.target.value
 
-        if(target.id == 'pwd') {
-           if(PosDialog.getPasswordStrength(value) === 1) console.log(target)
-           console.log('PosDialog.getPasswordStrength(value):', PosDialog.getPasswordStrength(value))
+        if (target.id == 'pwd') {
+           return {index: DialogVarify.getPasswordStrength(value), verfifyElement: this.verifyElement}
+
         }
     }
 }
 
-const dialog = {
-    state: {
-        isOpen: false,
-        children: [],
-        style: {},
-        dialogs: [],
-        emailTitles: ['minimum 6 characters', 'contain correct characters'],
-        passwordTitles: ['Minimum of 8 characters', 'Upper and lower case letters', 'At least one number or symbol'],
-        current_PosDialog: {}
-    },
-    addListeners: function () {
-        const targets = Array.from(document.querySelectorAll('input'))
-        const dialogs = targets.map(target => {
-            target.addEventListener('input', (e) => this.checkValidation(e))
-            target.addEventListener('pointerdown', (e) => this.open(e))
-            return new PosDialog(target)
-        })
-        document.querySelector('button').onclick = function () {
-            this.close()
-        }.bind(this)
-        this.state.dialogs = dialogs
-    },
-    createChildren: function (addListeners) {
-        addListeners && addListeners.bind(this)();
-    },
-    checkValidation: function (e) {
-        this.state.current_PosDialog.checkValidation(e)
-    },
-    open: function (event) {
-        PosDialog._target = event.target
-        this.state.current_PosDialog = this.state.dialogs.filter(posDialog => posDialog.target === event.target && posDialog.moveTo(true))[0];
-        this.state.isOpen = true
-    },
-    close: function (event) {
-        // Resets state
-        PosDialog.state = {open: '', target: ''}
 
-        this.state.current_PosDialog.moveTo(false);
-        this.state.isOpen = false;
+/* Example usage for multiple Dialogs in one file */
+const dialog = {
+    addListeners: function () {
+        
+        const dialogElement = document.querySelector('.Dialog#one')
+        
+        const anotherDialogElement = document.querySelector('.Dialog#two')
+
+        const dialogOne = new DialogVarify(dialogElement)
+        const dialogTwo = new DialogVarify(anotherDialogElement)
+
+        const targetsOne = Array.from(document.querySelectorAll('input.first'))
+        const targetsTwo = Array.from(document.querySelectorAll('input.two'))
+
+        targetsOne.forEach(target => {
+            target.addEventListener('click', (e) => dialogOne.open(e))
+            target.addEventListener('input', (e) => {
+                // Index of password check element
+                const {index, verfifyElement} = dialogOne.checkValidation(e)
+                if(index !== -1) {
+                    console.log(verfifyElement.querySelectorAll('span')[index].classList.add('varify-active'))
+                }
+            })
+        })
+
+        targetsTwo.forEach(target => {
+            target.addEventListener('click', (e) => dialogTwo.open(e)),
+                target.addEventListener('input', (e) => dialogTwo.checkValidation(e))
+        })
+        
+
+        const closeBtns = Array.from(document.querySelectorAll('.close-dialog'))
+        closeBtns.forEach(close =>
+            close.addEventListener('click', (e) => {
+                console.log(e.target.id)
+                if (e.target.id === 'close-one') {
+                    return dialogOne.close(e)
+                }
+                dialogTwo.close(e)
+            })
+        );
     }
 };
-dialog.addListeners()
-// dialog.createChildren(dialog.addListeners)
+// dialog.addListeners()
