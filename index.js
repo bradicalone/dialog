@@ -7,6 +7,7 @@ class DialogVarify {
         this.dialog = dialog
         this.offset = dialog.getBoundingClientRect()
         this.moveTo = this.moveTo
+        this.checkValidation = this.checkValidation
         this.offset.currentX = 0;
         this.offset.currentY = 0;
         this.extraPadding = 30;

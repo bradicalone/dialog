@@ -13,6 +13,7 @@ targetsOne.forEach(target => {
     target.addEventListener('click', (e) => dialogOne.open(e))
     target.addEventListener('input', (e) => {
         // Index of password or email check element
+        console.log(dialogOne)
         const {index, verfifyElement} = dialogOne.checkValidation(e)
         console.log('verfifyElement:', verfifyElement)
         if(index !== -1 && verfifyElement) {
