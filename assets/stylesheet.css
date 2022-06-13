@@ -110,7 +110,7 @@
   transition: background-color 0.4s ease, border 0.4s ease;
 }
 
-.Dialog .Dialog__layout .Minimum, .Dialog .Dialog__layout .UpperLower, .Dialog .Dialog__layout .NumSymbol {
+.Dialog .Dialog__layout .Varification div {
   display: flex;
   align-items: center;
   margin: 15px 0 15px 10px;

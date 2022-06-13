@@ -137,7 +137,6 @@ class DialogVarify {
         Array.from(this.dialog.querySelectorAll('.Varification')).forEach(el => {
             if (el.classList.contains(`Varification__${this.target.name}`)) {
                 this.verifyElement = el
-                console.log(el)
                 el.style.opacity = 1
             } else {
                 el.style.opacity = 0
@@ -198,6 +197,10 @@ class DialogVarify {
         return this;
     }
 
+    static emailPasses(email) {
+        return  /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(email)
+    }    
+
     // Must be at least 8 characters and include one capital letter and one number.
     static passesCharLength(password) {
         return password.length >= 8;
@@ -211,17 +214,20 @@ class DialogVarify {
     static hasNumberSpecial(password) {
         return /[\"/$&+,:;=?@#0-9_|'.^*()%!-]/gi.test(password);
     }
+    static isStringPassword(password) {
+        return getPasswordStrength(password) === 1;
+    }
     static getPasswordStrength(password) {
-
-
-        /* Returns a value from 0 to 1 indicating how secure the password is */
+        /* Returns a number refering to input element index */
         const checks = [this.passesCharLength, this.hasNumberSpecial, this.hasCapitalLower];
         const indexPassed = checks.map((check) => check(password)).indexOf(true);
         return indexPassed
     }
 
-    static isStringPassword(password) {
-        return getPasswordStrength(password) === 1;
+    static checkEmail(email) {
+        /* needs updating for others */
+        const checks = [this.emailPasses];
+        return checks.map((check) => check(email)).indexOf(true);
     }
 
     checkValidation(e) {
@@ -231,52 +237,15 @@ class DialogVarify {
         if (target.id == 'pwd') {
            return {index: DialogVarify.getPasswordStrength(value), verfifyElement: this.verifyElement}
 
+        }else if (target.id == 'email') {
+            console.log(DialogVarify.checkEmail(value))
+            return {index: DialogVarify.checkEmail(value), verfifyElement: this.verifyElement}
+ 
         }
     }
 }
 
 
-/* Example usage for multiple Dialogs in one file */
-const dialog = {
-    addListeners: function () {
-        
-        const dialogElement = document.querySelector('.Dialog#one')
-        
-        const anotherDialogElement = document.querySelector('.Dialog#two')
 
-        const dialogOne = new DialogVarify(dialogElement)
-        const dialogTwo = new DialogVarify(anotherDialogElement)
+    
 
-        const targetsOne = Array.from(document.querySelectorAll('input.first'))
-        const targetsTwo = Array.from(document.querySelectorAll('input.two'))
-
-        targetsOne.forEach(target => {
-            target.addEventListener('click', (e) => dialogOne.open(e))
-            target.addEventListener('input', (e) => {
-                // Index of password check element
-                const {index, verfifyElement} = dialogOne.checkValidation(e)
-                if(index !== -1) {
-                    console.log(verfifyElement.querySelectorAll('span')[index].classList.add('varify-active'))
-                }
-            })
-        })
-
-        targetsTwo.forEach(target => {
-            target.addEventListener('click', (e) => dialogTwo.open(e)),
-                target.addEventListener('input', (e) => dialogTwo.checkValidation(e))
-        })
-        
-
-        const closeBtns = Array.from(document.querySelectorAll('.close-dialog'))
-        closeBtns.forEach(close =>
-            close.addEventListener('click', (e) => {
-                console.log(e.target.id)
-                if (e.target.id === 'close-one') {
-                    return dialogOne.close(e)
-                }
-                dialogTwo.close(e)
-            })
-        );
-    }
-};
-// dialog.addListeners()
