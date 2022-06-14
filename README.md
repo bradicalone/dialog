@@ -7,7 +7,7 @@
 * run the script.js
 * Or use from cdn link:
 ```
-<script src="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/dist/index.min.js"></script>
 ```
 
 

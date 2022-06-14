@@ -7,6 +7,7 @@
 
 
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,6 +16,7 @@
         margin-top: 20px;
     }
 }
+
 
 .Dialog {
     position: absolute;

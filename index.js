@@ -104,8 +104,7 @@ class DialogVarify {
     checkPos() {
         const dialogPos = this.dialog.getBoundingClientRect();
         const targetPos = this.target.getBoundingClientRect();
-
-        const canFitRight = targetPos.right > dialogPos.width + this.extraPadding && targetPos.y > dialogPos.height / 2;
+        const canFitRight = window.innerWidth - targetPos.right > dialogPos.width + this.extraPadding && targetPos.y > dialogPos.height / 2;
         const canFitLeft = targetPos.x > dialogPos.width + this.extraPadding && targetPos.y > dialogPos.height / 2;
         const canFitAbove = targetPos.y + this.extraPadding > dialogPos.height
         return { canFitRight, canFitLeft, canFitAbove, offsetX: dialogPos.x, targetPos, dialogPos }
@@ -220,9 +219,11 @@ class DialogVarify {
             if (progress == 1) {
                 if (!open) {
                     this.inputAttributes && varifyEl.removeAttribute('style')
+                    this.dialog.style.pointerEvents = 'none'
                     return this.state = { target: '', open: false, resized: false }
                 }
 
+                this.dialog.style.pointerEvents = 'auto'
                 this.offset.currentX = x
                 this.offset.currentY = y
                 // Keeps from clicking when dialog in same open or closing state
@@ -295,6 +296,7 @@ class DialogVarify {
         }
     }
 }
+
 
 
 
