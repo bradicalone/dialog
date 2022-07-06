@@ -9,6 +9,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var DialogVarify = /*#__PURE__*/function () {
+  /**
+   * 
+   * @param {Element} dialog - The dialog element 
+   * @param {Array<string>} inputAttributes - name attributes of the built in verification; by default it's undefined
+   */
   function DialogVarify(dialog, inputAttributes) {
     _classCallCheck(this, DialogVarify);
 
@@ -39,13 +44,15 @@ var DialogVarify = /*#__PURE__*/function () {
     value: function appendVarification() {
       var _this = this;
 
+      var fragment = new DocumentFragment();
       var layoutEl = this.dialog.querySelector('.Dialog__layout');
       var vaerifyEl = document.createElement('div');
       vaerifyEl.className = 'Varification';
       vaerifyEl.innerHTML = this.inputAttributes.reduce(function (string, field) {
         return string + _this.getFields()[field];
       }, '');
-      layoutEl.appendChild(vaerifyEl);
+      fragment.appendChild(vaerifyEl);
+      layoutEl.appendChild(fragment);
     }
   }, {
     key: "open",
@@ -199,6 +206,8 @@ var DialogVarify = /*#__PURE__*/function () {
         side: side
       };
     }
+    /* Eases out smoothly | slowly */
+
   }, {
     key: "showDetails",
     value: // Show the verification content per input
@@ -230,8 +239,8 @@ var DialogVarify = /*#__PURE__*/function () {
           y = _this$getPos2.y,
           side = _this$getPos2.side;
 
-      var dur = open ? 400 : 400;
-      var rotateDegree = 55;
+      var dur = open ? 450 : 300;
+      var rotateDegree = open ? 55 : 45;
 
       var _this$checkPos2 = this.checkPos(),
           canFitRight = _this$checkPos2.canFitRight,
@@ -244,20 +253,22 @@ var DialogVarify = /*#__PURE__*/function () {
       dialog.style.transition = hasStyle ? 'transform .3s cubic-bezier(0.25, 1, 0.5, 1)' : null;
       dialog.style.transform = "translate(".concat(~~x, "px, ").concat(~~y, "px)");
       arrow.className = !open ? 'Dialog__arrow' : "Dialog__arrow --".concat(side);
+      innerEl.style.transformOrigin = !rotateVertical ? 'center bottom' : 'left center';
       this.showDetails();
       var start = 0;
 
       var animate = function animate(timestamp) {
         if (!start) start = timestamp;
         var progress = Math.min((timestamp - start) / dur, 1);
-        var ease = open ? DialogVarify.outBack(progress) : DialogVarify.outQuart(progress);
+        var ease = open ? DialogVarify.outCube(progress) : DialogVarify.inCube(progress);
         var deg = !open ? rotateDegree * ease : rotateDegree - rotateDegree * ease;
         var rotate = !rotateVertical ? "rotateY(".concat(deg, "deg)") : "rotateX(".concat(deg, "deg)");
-        innerEl.style.transformOrigin = !rotateVertical ? 'center bottom' : 'left center';
+        var translateZ = !open ? 0 - 50 * progress : -50 + 50 * progress;
+        var perspective = ' perspective(500px) translateZ(' + translateZ + 'px)';
 
         if (_this5.state.open !== open) {
-          innerEl.style.transform = rotate;
-          innerEl.style.opacity = open ? 1 * progress : 1 - 1 * progress;
+          innerEl.style.transform = rotate + perspective;
+          innerEl.style.opacity = open ? 1 * ease : 1 - 1 * ease;
         }
 
         if (progress == 1) {
@@ -369,11 +380,10 @@ var DialogVarify = /*#__PURE__*/function () {
   return DialogVarify;
 }();
 
-_defineProperty(DialogVarify, "outQuart", function (n) {
+_defineProperty(DialogVarify, "outCube", function (n) {
   return --n * n * n + 1;
 });
 
-_defineProperty(DialogVarify, "outBack", function (n) {
-  var s = 1.80158;
-  return --n * n * ((s + 1) * n + s) + 1;
+_defineProperty(DialogVarify, "inCube", function (n) {
+  return n * n * n;
 });
