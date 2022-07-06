@@ -2,6 +2,11 @@
 
 
 class DialogVarify {
+    /**
+     * 
+     * @param {Element} dialog - The dialog element 
+     * @param {Array<string>} inputAttributes - name attributes of the built in verification; by default it's undefined
+     */
     constructor(dialog, inputAttributes) {
         this.state = { target: '', open: false, resized: false }
         this.dialog = dialog
@@ -45,12 +50,13 @@ class DialogVarify {
     }
 
     appendVarification() {
+        const fragment = new DocumentFragment()
         const layoutEl = this.dialog.querySelector('.Dialog__layout') 
         const vaerifyEl = document.createElement('div')
         vaerifyEl.className = 'Varification'
         vaerifyEl.innerHTML = this.inputAttributes.reduce((string, field) => string + this.getFields()[field], '')
-
-        layoutEl.appendChild(vaerifyEl)
+        fragment.appendChild(vaerifyEl)
+        layoutEl.appendChild(fragment)
     }
 
     open(e) {
@@ -164,13 +170,14 @@ class DialogVarify {
         return { x, y, side };
     }
 
-    static outQuart = (n) => {
+    /* Eases out smoothly | slowly */
+    static outCube = n => {
         return --n * n * n + 1;
     };
 
-    static outBack = (n) => {
-        const s = 1.80158;
-        return --n * n * ((s + 1) * n + s) + 1;
+    /* Eases in smoothly | slowly */
+    static inCube = n => {
+        return n * n * n;
     };
 
     // Show the verification content per input
@@ -189,8 +196,8 @@ class DialogVarify {
         const { dialog, innerEl, arrow, varifyEl } = this.getElements();
         const { x, y, side } = this.getPos();
 
-        const dur = open ? 400 : 400;
-        const rotateDegree = 55;
+        const dur = open ? 450 : 300;
+        const rotateDegree = open ? 55 : 45;
         const { canFitRight, canFitLeft, canFitAbove } = this.checkPos();
         const rotateVertical = canFitRight && canFitAbove || canFitLeft && canFitAbove ? false : true
 
@@ -200,6 +207,7 @@ class DialogVarify {
         dialog.style.transition = hasStyle ? 'transform .3s cubic-bezier(0.25, 1, 0.5, 1)' : null
         dialog.style.transform = `translate(${~~x}px, ${~~y}px)`;
         arrow.className = !open ? 'Dialog__arrow' : `Dialog__arrow --${side}`
+        innerEl.style.transformOrigin = !rotateVertical ? 'center bottom' : 'left center';
         this.showDetails()
 
         let start = 0;
@@ -207,15 +215,20 @@ class DialogVarify {
             if (!start) start = timestamp;
 
             const progress = Math.min((timestamp - start) / dur, 1);
-            const ease = open ? DialogVarify.outBack(progress) : DialogVarify.outQuart(progress);
-            const deg = !open ? rotateDegree * ease : rotateDegree - (rotateDegree * ease);
+            const ease = open ? DialogVarify.outCube(progress) : DialogVarify.inCube(progress);
 
+            const deg = !open ? rotateDegree * ease : rotateDegree - (rotateDegree * ease);
             const rotate = !rotateVertical ? `rotateY(${deg}deg)` : `rotateX(${deg}deg)`;
-            innerEl.style.transformOrigin = !rotateVertical ? 'center bottom' : 'left center';
+
+            const translateZ = !open ? 0 - (50 * progress) : -50 + (50 * progress)
+            const perspective = ' perspective(500px) translateZ(' + translateZ + 'px)'
+            
+
             if (this.state.open !== open) {
-                innerEl.style.transform = rotate;
-                innerEl.style.opacity = open ? 1 * progress : 1 - 1 * progress;
+                innerEl.style.transform = rotate + perspective;
+                innerEl.style.opacity = open ? 1 * ease : 1 - 1 * ease;
             }
+
             if (progress == 1) {
                 if (!open) {
                     this.inputAttributes && varifyEl.removeAttribute('style')

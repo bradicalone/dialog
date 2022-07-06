@@ -1,13 +1,15 @@
 # Dialog Verification
 
-`dialog-verify`  Performant dialog popup that lets the users know when input fields pass tests you give to the dialog. 
+`dialog-verify`  Performant dialog popup that lets the users know when input fields pass tests you give to the dialog, or use as information dialog for when user clicks on input field dialog will animate to and open with given message you want.  
 
 ## Installation Instructions
 * clone or download
-* run the script.js
-* Or use from cdn link:
+* bring in the script and defer in the head of document. run the script.js 
+* bring in the stylesheet.css
+* Or use both from cdn link:
 ```
 <script src="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/dist/index.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/dist/stylesheet.css">
 ```
 
 
@@ -45,8 +47,8 @@ Creating a varification dialog is extremely simple! To create a new dialog with 
 const dialogElement = document.querySelector('.Dialog')
 const verification = new DialogVarify(dialogElement)
 // Open dialog 
-const input = document.querySelector('input')
-input.addEventListener('click', (e) => verification.open(e))
+const input = document.querySelector('input')  👈   // Dialog will animate to the input field attached to the click handler
+input.addEventListener('click', (e) => verification.open(e)) 👈  // open method needs to have the Event (e) passed to it
 
 // Close dialog
 const closeButton = document.querySelector('button')
@@ -66,8 +68,8 @@ const dialogElement = document.querySelector('.Dialog')
 const verification = new DialogVarify(dialogElement, ['email', 'password'])
 
 // Open dialog 
-const input = document.querySelector('input')
-input.addEventListener('click', (e) => verification.open(e))
+const input = document.querySelector('input')  👈   // Dialog will animate to the input field attached to the click handler
+input.addEventListener('click', (e) => verification.open(e))  👈  // open method needs to have the Event (e) passed to it
 
 /*
 * Using built in varification
@@ -75,8 +77,8 @@ input.addEventListener('click', (e) => verification.open(e))
 input.addEventListener('input', (e) => verification.checkValidation(e))
 
 // Close dialog
-const closeButton = document.querySelector('button')
-closeButton.addEventListener('click', (e) => verification.close(e))
+const closeButton = document.querySelector('button')  👈   // Dialog will animate to the input field attached to the click handler
+closeButton.addEventListener('click', (e) => verification.close(e)) 👈  // close method needs to have the Event (e) passed to it
 ```
 
 
@@ -124,6 +126,7 @@ closeButton.addEventListener('click', (e) => verification.close(e))
 ```
 
 ```javascript
+// Frist example simplest using your own logic possibly for just information of an element for the user to read.
 const dialogElement = document.querySelector('.Dialog#one')
 const dialogOne = new DialogVarify(dialogElement)
 
@@ -140,7 +143,7 @@ const anotherDialogElement = document.querySelector('.Dialog#two')
 const targetsTwo = Array.from(document.querySelectorAll('input.two'))
 
 /* 
-* @param {HTMLElement} dialog element
+* @param {HTMLElement} the dialog element
 * @param {Array} Array of string input elements you wish to use
 */
 const dialogTwo = new DialogVarify(anotherDialogElement, ['email', 'password'])

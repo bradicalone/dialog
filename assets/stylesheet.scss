@@ -17,6 +17,11 @@
     }
 }
 
+@mixin breakpointMax($size) {
+    @media (max-width: $size) {
+        @content;
+    }
+}
 
 .Dialog {
     position: absolute;
@@ -24,8 +29,14 @@
     transform: translate(0px, 0px);
     pointer-events: none;
     perspective: 1000px;
+    width: fit-content;
     backface-visibility: hidden;
+    @include breakpointMax(500px) {
+        padding: 0 10px;
+        width: 100%;
+    }
     .Dialog__inner {
+        transform: perspective(500px) translateZ(-50px);
         opacity: 0;
         background: #fff;
         border-radius: 30px;
@@ -47,7 +58,7 @@
     .Dialog__arrow {
         display: block;
         position: absolute;
-        z-index: 0;
+        z-index: -1;
         width: 0;
         height: 0;
         border-left: 14px solid transparent;
@@ -85,7 +96,7 @@
     }
 
     .--right {
-        transition: left 0.3s cubic-bezier(.31,1.4,.64,1), transform 0.4s ease, opacity .3s cubic-bezier(0, 0.55, 0.45, 1);
+        transition: left 0.4s cubic-bezier(.31,1.4,.64,1), transform 0.35s ease, opacity .3s cubic-bezier(0, 0.55, 0.45, 1);
         opacity: 1;
         left: 100%;
         transform: translate(-20%, -50%)  rotate(270deg);

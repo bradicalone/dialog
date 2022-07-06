@@ -1,10 +1,11 @@
-// Frist example simplest using your own logic
+// Frist example simplest using your own logic possibly for just information of an element for the user to read.
 const dialogElement = document.querySelector('.Dialog#one')
 const dialogOne = new DialogVarify(dialogElement)
 
+
 const targetsOne = Array.from(document.querySelectorAll('input.first'))
 targetsOne.forEach(target => {
-    target.addEventListener('click', (e) => dialogOne.open(e))
+    target.addEventListener('click', (e) => dialogOne.open(e)) 
     target.addEventListener('input', (e) => {
         // Your own logic...
     })
@@ -15,7 +16,7 @@ const anotherDialogElement = document.querySelector('.Dialog#two')
 const targetsTwo = Array.from(document.querySelectorAll('input.two'))
 
 /* 
-* @param {HTMLElement} dialog element
+* @param {HTMLElement} the dialog element
 * @param {Array} Array of string input elements you wish to use
 */
 const dialogTwo = new DialogVarify(anotherDialogElement, ['email', 'password'])

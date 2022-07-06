@@ -1,7 +1,7 @@
 {
   "name": "dialog-verify",
   "version": "1.0.0",
-  "description": "verify input fileds data ",
+  "description": "verify input fields data or use information dialog",
   "main": "./dist/index.min.js",
   "scripts": {
     "minify": "npx minify ./dist/index.js --out-file ./dist/index.min.js",
