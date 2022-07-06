@@ -8,7 +8,7 @@
 * bring in the stylesheet.css
 * Or use both from cdn link:
 ```
-<script src="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/bradicalone/dialog/dist/index.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bradicalone/dialog@latest/dist/stylesheet.css">
 ```
 
