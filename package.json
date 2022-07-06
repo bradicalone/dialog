@@ -1,6 +1,6 @@
 {
   "name": "dialog-verify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "verify input fields data or use information dialog",
   "main": "./dist/index.min.js",
   "scripts": {
